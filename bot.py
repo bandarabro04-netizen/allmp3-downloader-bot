@@ -89,20 +89,19 @@ def _download_audio(url: str, out_dir: str) -> str:
     Returns the path to the resulting mp3 file."""
     outtmpl = str(Path(out_dir) / "%(title).100s.%(ext)s")
 
-    ydl_opts = {
+   ydl_opts = {
     'format': 'bestaudio/best',
+    'outtmpl': 'downloads/%(id)s.%(ext)s',
     'postprocessors': [{
         'key': 'FFmpegExtractAudio',
         'preferredcodec': 'mp3',
         'preferredquality': '192',
     }],
-    'user_agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
     'nocheckcertificate': True,
     'ignoreerrors': True,
     'no_warnings': True,
     'quiet': True,
 }
-
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(url, download=True)
         # After the postprocessor runs, the extension becomes mp3
